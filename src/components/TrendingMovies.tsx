@@ -8,12 +8,15 @@ import {
 import React from "react";
 import Carousel from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/core";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/RootNavigation";
 
 let { width, height } = Dimensions.get("window");
 const TrendingMovies = ({ data }): JSX.Element => {
-  const navigation = useNavigation();
-  const handleOnPress = () => {
-    // navigation.navigate("Movie", item);
+  const navigation =
+  useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const handleOnPress = (item) => {
+    navigation.navigate("Movie", item);
   };
   return (
     <View className="mb-8">
@@ -36,7 +39,7 @@ export default TrendingMovies;
 
 const MovieCard = ({ item, handleOnPress }) => {
   return (
-    <TouchableWithoutFeedback onPress={handleOnPress}>
+    <TouchableWithoutFeedback onPress={() => handleOnPress(item)}>
       <Image
         source={require("../assets/images/moviePoster1.png")}
         style={{ width: width * 0.6, height: height * 0.4 }}

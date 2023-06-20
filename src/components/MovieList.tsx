@@ -10,11 +10,14 @@ import {
 import React from "react";
 import { styles } from "../theme";
 import { useNavigation } from "@react-navigation/core";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/RootNavigation";
 
 let { width, height } = Dimensions.get("window");
 
-const MovieList = ({ title, data }) => {
-  const navigation = useNavigation();
+const MovieList = ({ title, data }): JSX.Element => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const movieName = "Ant-Man and the Wasp: Quantumania";
   return (
     <View className="mb-8 space-x-4">
@@ -35,7 +38,7 @@ const MovieList = ({ title, data }) => {
         {data.map((item, index) => {
           return (
             <TouchableWithoutFeedback
-              //   onPress={() => navigation.navigate("Movie", item)}
+              onPress={() => navigation.navigate("Movie", item)}
               key={index}
             >
               <View className="space-y-1 mr-4">
