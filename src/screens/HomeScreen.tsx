@@ -14,10 +14,13 @@ import {
 } from "react-native-heroicons/outline";
 import { styles } from "../theme";
 import TrendingMovies from "../components/TrendingMovies";
+import MovieList from "../components/MovieList";
 
 const ios = Platform.OS == "ios";
 const HomeScreen = (): JSX.Element => {
   const [trending, setTrending] = useState([1, 2, 3]);
+  const [upComing, setUpComing] = useState([1, 2, 3]);
+  const [topRating, setTopRating] = useState([1, 2, 3]);
   return (
     <View className="flex-1 bg-neutral-800">
       {/* search bar and log */}
@@ -38,6 +41,10 @@ const HomeScreen = (): JSX.Element => {
         contentContainerStyle={{ paddingBottom: 10 }}
       >
         <TrendingMovies data={trending} />
+
+        <MovieList title="Upcoming" data={upComing} />
+
+        <MovieList title="Top Rating" data={topRating} />
       </ScrollView>
     </View>
   );
