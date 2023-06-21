@@ -15,19 +15,22 @@ import { RootStackParamList } from "../navigation/RootNavigation";
 
 let { width, height } = Dimensions.get("window");
 
-const MovieList = ({ title, data }): JSX.Element => {
+const MovieList = ({ title, data, hideSeeAll }): JSX.Element => {
+  const movieName = "Ant-Man and the Wasp: Quantumania";
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const movieName = "Ant-Man and the Wasp: Quantumania";
   return (
     <View className="mb-8 space-x-4">
       <View className="mx-4 flex-row justify-between items-center">
         <Text className="text-white text-xl">{title}</Text>
-        <TouchableOpacity>
-          <Text style={styles.text} className="text-lg">
-            See All
-          </Text>
-        </TouchableOpacity>
+        {!hideSeeAll && (
+          <TouchableOpacity>
+            <Text style={styles.text} className="text-lg">
+              See All
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       {/* Movie row */}
       <ScrollView
@@ -38,7 +41,7 @@ const MovieList = ({ title, data }): JSX.Element => {
         {data.map((item, index) => {
           return (
             <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("Movie", item)}
+              onPress={() => navigation.push("Movie", item)} // not working if use navigation.navigate
               key={index}
             >
               <View className="space-y-1 mr-4">
