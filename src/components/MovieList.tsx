@@ -12,6 +12,7 @@ import { styles } from "../theme";
 import { useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigation";
+import { fallbackMoviePoster, image185 } from "../api/moviedb";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,8 +23,6 @@ type Props = {
 };
 
 const MovieList = ({ title, data, hideSeeAll }: Props): JSX.Element => {
-  const movieName = "Ant-Man and the Wasp: Quantumania";
-
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   return (
@@ -44,7 +43,9 @@ const MovieList = ({ title, data, hideSeeAll }: Props): JSX.Element => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {data.map((item, index) => {
+        {data.map((item, index: number) => {
+          // console.log(item.poster_path , item.title);
+          const movieName = item.title;
           return (
             <TouchableWithoutFeedback
               onPress={() => navigation.push("Movie", item)} // not working if use navigation.navigate
@@ -52,7 +53,7 @@ const MovieList = ({ title, data, hideSeeAll }: Props): JSX.Element => {
             >
               <View className="space-y-1 mr-4">
                 <Image
-                  source={require("../assets/images/moviePoster2.png")}
+                  source={{ uri: image185(item.poster_path) || fallbackMoviePoster}}
                   style={{ width: width * 0.33, height: height * 0.22 }}
                   className="rounded-3xl"
                 />

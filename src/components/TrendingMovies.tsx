@@ -10,11 +10,12 @@ import Carousel from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigation";
+import { fallbackMoviePoster, image500 } from "../api/moviedb";
 
 const { width, height } = Dimensions.get("window");
 const TrendingMovies = ({ data }): JSX.Element => {
   const navigation =
-  useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const handleOnPress = (item) => {
     navigation.navigate("Movie", item);
   };
@@ -41,7 +42,7 @@ const MovieCard = ({ item, handleOnPress }) => {
   return (
     <TouchableWithoutFeedback onPress={() => handleOnPress(item)}>
       <Image
-        source={require("../assets/images/moviePoster1.png")}
+        source={{ uri: image500(item.poster_path) || fallbackMoviePoster }}
         style={{ width: width * 0.6, height: height * 0.4 }}
         className="rounded-3xl"
       />

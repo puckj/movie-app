@@ -19,6 +19,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Cast from "../components/Cast";
 import MovieList from "../components/MovieList";
 import Loading from "../components/Loading";
+import { API_KEY } from "@env";
 
 const { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
@@ -30,7 +31,7 @@ const MovieScreen = (): JSX.Element => {
   const { params: item } = useRoute();
   const [isFavourite, setIsFavourite] = useState(false);
   const [cast, setCast] = useState([1, 2, 3, 4, 5]);
-  const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
+  const [similarMovies, setSimilarMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
