@@ -18,6 +18,7 @@ import MovieList from "../components/MovieList";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigation";
+import Loading from "../components/Loading";
 
 const ios = Platform.OS == "ios";
 const HomeScreen = (): JSX.Element => {
@@ -26,6 +27,7 @@ const HomeScreen = (): JSX.Element => {
   const [trending, setTrending] = useState([1, 2, 3]);
   const [upComing, setUpComing] = useState([1, 2, 3]);
   const [topRating, setTopRating] = useState([1, 2, 3]);
+  const [loading, setLoading] = useState(false);
   return (
     <View className="flex-1 bg-neutral-800">
       {/* search bar and log */}
@@ -41,16 +43,20 @@ const HomeScreen = (): JSX.Element => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 10 }}
-      >
-        <TrendingMovies data={trending} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 10 }}
+        >
+          <TrendingMovies data={trending} />
 
-        <MovieList title="Upcoming" data={upComing} />
+          <MovieList title="Upcoming" data={upComing} />
 
-        <MovieList title="Top Rating" data={topRating} />
-      </ScrollView>
+          <MovieList title="Top Rating" data={topRating} />
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -14,15 +14,17 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigation";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { XMarkIcon } from "react-native-heroicons/outline";
+import Loading from "../components/Loading";
 
-let { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const SearchScreen = () => {
   const movieName = "Ant-Man and the Wasp: Quantumania";
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const [results, setResults] = useState([1,2,3,4,5]);
+  const [results, setResults] = useState([1, 2, 3, 4, 5]);
+  const [loading, setLoading] = useState(false);
   return (
     <SafeAreaView className="bg-neutral-800 flex-1">
       <View className="mx-4 mb-3 flex-row justify-between items-center border border-neutral-500 rounded-full">
@@ -38,7 +40,10 @@ const SearchScreen = () => {
           <XMarkIcon size={25} color="white" />
         </TouchableOpacity>
       </View>
-      {results.length > 0 ? (
+      {/* results */}
+      {loading ? (
+        <Loading />
+      ) : results.length > 0 ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 15 }}

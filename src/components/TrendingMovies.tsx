@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigation";
 
-let { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 const TrendingMovies = ({ data }): JSX.Element => {
   const navigation =
   useNavigation<NativeStackNavigationProp<RootStackParamList>>();
