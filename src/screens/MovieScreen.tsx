@@ -62,7 +62,7 @@ const MovieScreen = (): JSX.Element => {
         </TouchableOpacity>
       </SafeAreaView>
 
-      {/* main */}
+      {/* main ScrollView*/}
       <ScrollView
         contentContainerStyle={{ paddingBottom: 20 }}
         className="flex-1 bg-neutral-900"
