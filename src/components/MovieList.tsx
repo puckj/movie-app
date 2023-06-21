@@ -15,7 +15,13 @@ import { RootStackParamList } from "../navigation/RootNavigation";
 
 let { width, height } = Dimensions.get("window");
 
-const MovieList = ({ title, data, hideSeeAll }): JSX.Element => {
+type Props = {
+  title: string;
+  data: any;
+  hideSeeAll?: boolean;
+};
+
+const MovieList = ({ title, data, hideSeeAll }: Props): JSX.Element => {
   const movieName = "Ant-Man and the Wasp: Quantumania";
 
   const navigation =

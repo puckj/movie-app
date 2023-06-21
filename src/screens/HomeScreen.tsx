@@ -15,9 +15,14 @@ import {
 import { styles } from "../theme";
 import TrendingMovies from "../components/TrendingMovies";
 import MovieList from "../components/MovieList";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/RootNavigation";
 
 const ios = Platform.OS == "ios";
 const HomeScreen = (): JSX.Element => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [trending, setTrending] = useState([1, 2, 3]);
   const [upComing, setUpComing] = useState([1, 2, 3]);
   const [topRating, setTopRating] = useState([1, 2, 3]);
@@ -31,7 +36,7 @@ const HomeScreen = (): JSX.Element => {
           <Text className="text-white text-3xl font-bold">
             <Text style={styles.text}>M</Text>ovies
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
             <MagnifyingGlassIcon size={30} strokeWidth={2} color="white" />
           </TouchableOpacity>
         </View>
