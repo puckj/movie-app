@@ -7,17 +7,21 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "../theme";
+import { styles, theme } from "../theme";
 import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import { HeartIcon } from "react-native-heroicons/solid";
 import MovieList from "../components/MovieList";
 import Loading from "../components/Loading";
-import { fetchPersonDetails, fetchPersonMovieCredits, image342 } from "../api/moviedb";
+import {
+  fetchPersonDetails,
+  fetchPersonMovieCredits,
+  image342,
+} from "../api/moviedb";
 
 const { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
@@ -27,10 +31,12 @@ const PersonScreen = (): JSX.Element => {
   const { params: item } = useRoute<any>();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const [loading, setLoading] = useState(true);
   const [isFavourite, setIsFavourite] = useState(false);
   const [personDetail, setPersonDetail] = useState<any>(null);
   const [personMovies, setPersonMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [lengthMore, setLengthMore] = useState(false);
+  const [textShown, setTextShown] = useState(false);
   useEffect(() => {
     // console.log(item, "item <<PersonScreen");
     getPersonDetails(item.id);
@@ -43,11 +49,18 @@ const PersonScreen = (): JSX.Element => {
     if (data) setPersonDetail(data);
     setLoading(false);
   };
-  const getPersonMovieCredits = async (personId:number) =>{
+  const getPersonMovieCredits = async (personId: number) => {
     const data = await fetchPersonMovieCredits(personId);
     // console.log(data.cast, "getPersonMovieCredits");
     if (data && data.cast) setPersonMovies(data.cast);
-  }
+  };
+
+  const onTextLayout = useCallback(
+    (e: { nativeEvent: { lines: string | any[] } }) => {
+      setLengthMore(e.nativeEvent.lines.length >= 18); //เช็คว่าเกิน 18 บรรทัดหรือป่าว
+    },
+    []
+  );
 
   return (
     <>
@@ -139,9 +152,21 @@ const PersonScreen = (): JSX.Element => {
             </View>
             <View className="my-6 mx-4 space-y-2">
               <Text className="text-white text-lg">Biography</Text>
-              <Text className="text-neutral-400 tracking-wide">
+              <Text
+                className="text-neutral-400 tracking-wide"
+                onTextLayout={onTextLayout}
+                numberOfLines={textShown ? undefined : 18}
+              >
                 {personDetail.biography ? personDetail.biography : "N/A"}
               </Text>
+              {lengthMore ? (
+                <Text
+                  onPress={() => setTextShown(!textShown)}
+                  style={{ color: theme.background, textAlign: "right" }}
+                >
+                  {textShown ? "Show less" : "Show more..."}
+                </Text>
+              ) : null}
             </View>
             <MovieList title="Movies" hideSeeAll={true} data={personMovies} />
           </View>

@@ -1,14 +1,12 @@
 import {
   View,
   Text,
-  ScrollView,
   TouchableOpacity,
   Image,
   FlatList,
 } from "react-native";
 import React, { useState } from "react";
 import { image185 } from "../api/moviedb";
-import * as Progress from "react-native-progress";
 
 const Cast = ({ cast, navigation }) => {
   const [loadedItems, setLoadedItems] = useState(10);
