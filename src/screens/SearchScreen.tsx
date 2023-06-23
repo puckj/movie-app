@@ -25,7 +25,7 @@ const SearchScreen = () => {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const handleSearch = (value) => {
+  const handleSearch = (value: any) => {
     console.log("value = ", value);
     if (value && value.length > 2) {
       setLoading(true);
@@ -93,8 +93,8 @@ const SearchScreen = () => {
                       style={{ width: width * 0.44, height: height * 0.3 }}
                     />
                     <Text className="text-neutral-400 ml-1">
-                      {item.title.length > 22
-                        ? item.title.slice(0, 22) + "..."
+                      {item.title.length > 20
+                        ? item.title.slice(0, 20) + "..."
                         : item.title}
                     </Text>
                   </View>

@@ -55,6 +55,8 @@ const Cast = ({ cast, navigation }) => {
         renderItem={renderItem}
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.5}
+        className="px-3"
+        showsHorizontalScrollIndicator={false}
         // ListFooterComponent={() => {
         //   return isLoadingMore ? (
         //     <View className="absolute flex-row justify-center items-center h-20 w-20">

@@ -60,7 +60,7 @@ const MovieScreen = (): JSX.Element => {
   const getSimilarMovies = async (movieId: number) => {
     const data = await fetchSimilarMovies(movieId);
     // console.log(data, 'fetchSimilarMovies');
-    if(data && data.results) setSimilarMovies(data.results)
+    if (data && data.results) setSimilarMovies(data.results);
   };
 
   return (
@@ -157,12 +157,14 @@ const MovieScreen = (): JSX.Element => {
               </Text>
             </View>
             {/* cast */}
-            {cast && <Cast navigation={navigation} cast={cast} />}
-            <MovieList
-              title="Similar Movies"
-              hideSeeAll={true}
-              data={similarMovies}
-            />
+            {cast.length > 0 && <Cast navigation={navigation} cast={cast} />}
+            {similarMovies.length > 0 && (
+              <MovieList
+                title="Similar Movies"
+                hideSeeAll={true}
+                data={similarMovies}
+              />
+            )}
           </>
         )}
       </ScrollView>

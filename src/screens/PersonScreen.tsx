@@ -45,7 +45,7 @@ const PersonScreen = (): JSX.Element => {
 
   const getPersonDetails = async (personId: number) => {
     const data = await fetchPersonDetails(personId);
-    // console.log(data, "PERSON DETAILS");
+    console.log(data, "PERSON DETAILS");
     if (data) setPersonDetail(data);
     setLoading(false);
   };
@@ -134,7 +134,7 @@ const PersonScreen = (): JSX.Element => {
               <View className="border-r-2 border-r-neutral-400 px-2 items-center">
                 <Text className="text-white font-semibold">Birthday</Text>
                 <Text className="text-neutral-300 text-sm">
-                  {personDetail.birthday}
+                  {personDetail.birthday ? personDetail.birthday : "N/A"}
                 </Text>
               </View>
               <View className="border-r-2 border-r-neutral-400 px-2 items-center">
