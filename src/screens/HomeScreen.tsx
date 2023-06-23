@@ -35,28 +35,29 @@ const HomeScreen = (): JSX.Element => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getTrendingMovies();
-    getUpcomingMovies();
-    getTopRatedMovies();
+    const initial = async () => {
+      await getTrendingMovies();
+      await getUpcomingMovies();
+      await getTopRatedMovies();
+      setLoading(false);
+    };
+    initial();
   }, []);
 
   const getTrendingMovies = async () => {
     const data = await fetchTrendingMovies();
     // console.log(data, " fetchTrendingMovies");
     if (data && data.results) setTrending(data.results);
-    setLoading(false);
   };
   const getUpcomingMovies = async () => {
     const data = await fetchUpcomingMovies();
     // console.log(data, " fetchUpcomingMovies");
     if (data && data.results) setUpcoming(data.results);
-    setLoading(false);
   };
   const getTopRatedMovies = async () => {
     const data = await fetchTopRatedMovies();
     // console.log(data, " fetchTopRatedMovies");
     if (data && data.results) setTopRated(data.results);
-    setLoading(false);
   };
 
   return (

@@ -19,27 +19,49 @@ import { LinearGradient } from "expo-linear-gradient";
 import Cast from "../components/Cast";
 import MovieList from "../components/MovieList";
 import Loading from "../components/Loading";
-import { API_KEY } from "@env";
+import {
+  fetchMovieCredits,
+  fetchMovieDetails,
+  fetchSimilarMovies,
+  image500,
+} from "../api/moviedb";
 
 const { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
 const topMargin = ios ? "" : " mt-3";
 
 const MovieScreen = (): JSX.Element => {
-  const movieName = "Ant-Man and the Wasp: Quantumania";
-
-  const { params: item } = useRoute();
+  const { params: item } = useRoute<any>();
   const [isFavourite, setIsFavourite] = useState(false);
-  const [cast, setCast] = useState([1, 2, 3, 4, 5]);
+  const [cast, setCast] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [movieDetail, setMovieDetail] = useState<any>(null);
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   useEffect(() => {
-    // console.log(item);
     //call the movie detail api
-    return () => {};
+    getMovieDetails(item.id);
+    getMovieCredits(item.id);
+    getSimilarMovies(item.id);
   }, [item]);
+
+  const getMovieDetails = async (movieId: number) => {
+    const data = await fetchMovieDetails(movieId);
+    // console.log(data, "MovieDetails");
+    if (data) setMovieDetail(data);
+    setLoading(false);
+  };
+  const getMovieCredits = async (movieId: number) => {
+    const data = await fetchMovieCredits(movieId);
+    // console.log(data);
+    if (data && data.cast) setCast(data.cast);
+  };
+  const getSimilarMovies = async (movieId: number) => {
+    const data = await fetchSimilarMovies(movieId);
+    // console.log(data, 'fetchSimilarMovies');
+    if(data && data.results) setSimilarMovies(data.results)
+  };
 
   return (
     <>
@@ -79,7 +101,13 @@ const MovieScreen = (): JSX.Element => {
             <View className="w-full">
               <View>
                 <Image
-                  source={require("../assets/images/moviePoster2.png")}
+                  source={
+                    movieDetail.poster_path
+                      ? {
+                          uri: image500(movieDetail.poster_path),
+                        }
+                      : require("../assets/images/fallback-movie-poster.jpeg")
+                  }
                   style={{ width, height: height * 0.55 }}
                 />
                 <LinearGradient
@@ -99,38 +127,37 @@ const MovieScreen = (): JSX.Element => {
             <View style={{ marginTop: -(height * 0.09) }} className="space-y-3">
               {/* title */}
               <Text className="text-white text-center text-3xl font-bold tracking-wider">
-                {movieName}
+                {movieDetail.title}
               </Text>
               {/* status, release, runtime */}
               <Text className="text-neutral-400 font-semibold text-base text-center">
-                Released • 2023 • 170 min
+                {movieDetail.status} • {movieDetail.release_date.split("-")[0]}{" "}
+                • {movieDetail.runtime} min
               </Text>
               {/* genres */}
               <View className="flex-row justify-center mx-4 space-x-2">
-                <Text className="text-neutral-400 font-semibold text-base text-center">
-                  Action •
-                </Text>
-                <Text className="text-neutral-400 font-semibold text-base text-center">
-                  Thrill •
-                </Text>
-                <Text className="text-neutral-400 font-semibold text-base text-center">
-                  Comedy
-                </Text>
+                {movieDetail.genres.map((item: any, index: number) => {
+                  const showDot =
+                    index + 1 != movieDetail.genres.length && index < 2;
+                  return (
+                    index < 3 && (
+                      <Text
+                        key={index}
+                        className="text-neutral-400 font-semibold text-base text-center"
+                      >
+                        {item.name} {showDot && "•"}
+                      </Text>
+                    )
+                  );
+                })}
               </View>
               {/* description */}
               <Text className="text-neutral-400 mx-4 tracking-wide">
-                Super-Hero partners Scott Lang (Paul Rudd) and Hope van Dyne
-                (Evangeline Lilly) return to continue their adventures as
-                Ant-Man and the Wasp. Together, with Hope's parents Janet van
-                Dyne (Michelle Pfeiffer) and Hank Pym (Michael Douglas), and
-                Scott's daughter Cassie Lang (Kathryn Newton), the family finds
-                themselves exploring the Quantum Realm, interacting with strange
-                new creatures and embarking on an adventure that will push them
-                beyond the limits of what they thought possible.
+                {movieDetail.overview}
               </Text>
             </View>
             {/* cast */}
-            <Cast navigation={navigation} cast={cast} />
+            {cast && <Cast navigation={navigation} cast={cast} />}
             <MovieList
               title="Similar Movies"
               hideSeeAll={true}

@@ -12,7 +12,7 @@ import { styles } from "../theme";
 import { useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigation";
-import { fallbackMoviePoster, image185 } from "../api/moviedb";
+import { image185 } from "../api/moviedb";
 
 const { width, height } = Dimensions.get("window");
 
@@ -43,7 +43,7 @@ const MovieList = ({ title, data, hideSeeAll }: Props): JSX.Element => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {data.map((item, index: number) => {
+        {data.map((item: any, index: number) => {
           // console.log(item.poster_path , item.title);
           const movieName = item.title;
           return (
@@ -53,7 +53,13 @@ const MovieList = ({ title, data, hideSeeAll }: Props): JSX.Element => {
             >
               <View className="space-y-1 mr-4">
                 <Image
-                  source={{ uri: image185(item.poster_path) || fallbackMoviePoster}}
+                  source={
+                    item.poster_path
+                      ? {
+                          uri: image185(item.poster_path),
+                        }
+                      : require("../assets/images/fallback-movie-poster.jpeg")
+                  }
                   style={{ width: width * 0.33, height: height * 0.22 }}
                   className="rounded-3xl"
                 />
