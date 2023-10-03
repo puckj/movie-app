@@ -1,13 +1,13 @@
 # MovieDB Application
-
-## Technologies
+A mobile app created with react-native (expo) that displays trending, upcoming, top-rated movies, and provides detailed information about cast and crew, 
+powered by the TMDB API
 - ReactNative (Expo)
 - NativeWind (CSS)
 - React Navigation
-- The Movie Database API (TMDB) [themoviedb.org](https://www.themoviedb.org/)
+- [The Movie Database API (TMDB)](https://www.themoviedb.org/)
 
-## Installation & Run
-1. Create `.env` file
-2. `yarn install`
-3. `npx patch-package` (สำหรับ patch module react-native-snap-carousel)
+## Get Started
+1. create `.env` file 
+2. install dependencies by `yarn install`
+3. use `npx patch-package` for patching "react-native-snap-carousel" package
 4. `yarn expo start`
